@@ -59,6 +59,28 @@ public class User {
         }
     }
 
+    public void passwordReset() {
+        String oldPassword = getValidString("Enter your old password: ");
+        if (verifyPassword(oldPassword)) {
+            String newPassword;
+
+            // Ensure new password is not empty and different from the old password
+            while (true) {
+                newPassword = getValidString("Enter your new password: ").trim();
+                if (!newPassword.isEmpty() && !verifyPassword(newPassword)) {
+                    break;
+                }
+                System.out.println("New password must be different from the old password and cannot be empty.");
+            }
+
+            // 🔹 FIX: Store the new hashed password
+            this.passwordHash = hashPassword(newPassword);
+            System.out.println("Password has been successfully reset.");
+        } else {
+            System.out.println("Invalid password. Please try again.");
+        }
+    }
+
     public Account getAccount() {
         return account;
     }
