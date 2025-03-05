@@ -67,5 +67,17 @@ public class Bank {
         }
     }
 
+    public void listAccounts() {
+        if (users.isEmpty()) {
+            System.out.println("No users registered yet.");
+        } else {
+            System.out.println("\n==== Bank Users & Accounts ====");
+            for (User user : users.values()) {
+                System.out.println(user.getFirstName() + " " + user.getLastName() +
+                        " - Account Number: " + user.getAccountNumber() +
+                        " - Balance: $" + user.getAccount().getBalance());
+            }
+        }
+    }
 
 }
