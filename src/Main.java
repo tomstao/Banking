@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        Bank bank = Bank.getInstance();
+        Bank bank = new Bank();
         while (true) {
             System.out.println("Welcome to the Bank");
             System.out.println("Please enter your choice");
