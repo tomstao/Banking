@@ -58,4 +58,8 @@ public class User {
             throw new RuntimeException("Error hashing password");
         }
     }
+
+    public Account getAccount() {
+        return account;
+    }
 }
