@@ -5,9 +5,11 @@ import static Banking.Utility.getValidString;
 public class User {
     final private String firstName;
     final private String lastName;
-    final private String accountNumber;
+    final private String savingAccountNumber;
+    final private String checkingAccountNumber;
     private String passwordHash;
-    private final Account account;
+    private final SavingsAccount savingAccount;
+    private final CheckingAccount checkingAccount;
 
     public User() {
         this.firstName = getValidString("Enter your first name: ");
@@ -15,18 +17,23 @@ public class User {
         this.passwordHash = hashPassword(getValidString("Enter your password: "));
 
         // 🔹 FIX: Get account type BEFORE calling createAccountForUser()
-        String accountType;
-        while (true) {
-            accountType = getValidString("Enter the account type (Savings/Checking): ").trim();
-            if (accountType.equalsIgnoreCase("Savings") || accountType.equalsIgnoreCase("Checking")) {
-                break;
-            }
-            System.out.println("Invalid account type. Please enter 'Savings' or 'Checking'.");
-        }
+//        String accountType;
+//        while (true) {
+//            accountType = getValidString("Enter the account type (Savings/Checking): ").trim();
+//            if (accountType.equalsIgnoreCase("Savings") || accountType.equalsIgnoreCase("Checking")) {
+//                break;
+//            }
+//            System.out.println("Invalid account type. Please enter 'Savings' or 'Checking'.");
+//        }
 
         // 🔹 FIX: Now pass the validated account type
-        this.account = Account.createAccountForUser(this, accountType);
-        this.accountNumber = account.getAccountNumber();  // Retrieve from Account
+//        this.account = Account.createAccountForUser(this, accountType);
+//        this.accountNumber = account.getAccountNumber();  // Retrieve from Account
+        this.savingAccount = new SavingsAccount();
+        this.checkingAccount = new CheckingAccount();
+        this.savingAccountNumber = this.savingAccount.getAccountNumber();
+        this.checkingAccountNumber = this.checkingAccount.getAccountNumber();
+
     }
 
     public String getFirstName() {
@@ -37,9 +44,6 @@ public class User {
         return lastName;
     }
 
-    public String getAccountNumber() {
-        return accountNumber;
-    }
 
     public boolean verifyPassword(String inputPassword) {
         return hashPassword(inputPassword).equals(passwordHash);
@@ -81,7 +85,19 @@ public class User {
         }
     }
 
-    public Account getAccount() {
-        return account;
+    public String getSavingAccountNumber() {
+        return savingAccountNumber;
+    }
+
+    public String getCheckingAccountNumber() {
+        return checkingAccountNumber;
+    }
+
+    public SavingsAccount getSavingAccount() {
+        return savingAccount;
+    }
+
+    public CheckingAccount getCheckingAccount() {
+        return checkingAccount;
     }
 }
