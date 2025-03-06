@@ -33,6 +33,7 @@ public class Main {
                     Utility.printMenu(loggedInUser, bank);
                 } else continue;
                 default: System.out.println("Invalid choice");
+
             }
 
         }

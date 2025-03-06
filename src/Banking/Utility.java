@@ -51,11 +51,6 @@ public class Utility {
         System.out.println("4. Open Account");
         System.out.println("5. Exit");
         Scanner scanner = new Scanner(System.in);
-        switch (scanner.nextLine())
-            {
-            case "1" -> bank.deposit(user.getAccountNumber(),scanner.nextDouble());
-
-            }
     }
 
 }
