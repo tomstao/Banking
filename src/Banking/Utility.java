@@ -43,13 +43,19 @@ public class Utility {
         return scanner.nextLine().trim();
     }
 
-    public static void printMenu(User user) {
+    public static void printMenu(User user, Bank bank) {
         System.out.println("\n=====" + user.getFirstName() + " " + user.getLastName() + " Welcome to bank system! =====");
         System.out.println("1. Deposit Money");
         System.out.println("2. Withdraw Money");
         System.out.println("3. Check Balance");
         System.out.println("4. Open Account");
         System.out.println("5. Exit");
+        Scanner scanner = new Scanner(System.in);
+        switch (scanner.nextLine())
+            {
+            case "1":
+
+            }
     }
 
 }

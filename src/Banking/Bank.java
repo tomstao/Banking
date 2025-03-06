@@ -17,10 +17,11 @@ public class Bank {
 //        return bank;
 //    }
 
-    public void registerUser() {
+    public User registerUser() {
         User newUser = new User();
         users.put(newUser.getAccountNumber(), newUser);
         System.out.println("New user registered: " + newUser.getAccountNumber());
+        return newUser;
     }
 
     public User authenticateUser(String accountNumber, String password) {
