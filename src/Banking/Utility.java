@@ -53,7 +53,7 @@ public class Utility {
         Scanner scanner = new Scanner(System.in);
         switch (scanner.nextLine())
             {
-            case "1":
+            case "1" -> bank.deposit(user.getAccountNumber(),scanner.nextDouble());
 
             }
     }

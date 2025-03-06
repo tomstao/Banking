@@ -16,7 +16,7 @@ public class Main {
             switch (scanner.nextLine()) {
                 case "1":
                     User newUser = bank.registerUser();
-                    System.out.println("New user registered: " + newUser.getAccountNumber() +
+                    System.out.println("New user registered: " + newUser.getFirstName() + " " + newUser.getLastName() +
                             ", to continue press 1, or press other key to exit:");
                     int choice = scanner.nextInt();
                     if (choice == 1) {

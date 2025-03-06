@@ -2,16 +2,18 @@ package Banking;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 public class Bank {
-    private final Map<String,User> users;
-    static private Bank bank;
+    private final Map<String,User> usersChecking;
+    private final Map<String,User> userSaving;
 
     public Bank() {
-        this.users = new HashMap<>();
+        usersChecking = new HashMap<>();
+        userSaving = new HashMap<>();
     }
 
-//    for singleton design.
+    //    for singleton design.
 //    static public Bank getInstance() {
 //        if (bank == null) bank = new Bank();
 //        return bank;
@@ -19,13 +21,18 @@ public class Bank {
 
     public User registerUser() {
         User newUser = new User();
-        users.put(newUser.getAccountNumber(), newUser);
-        System.out.println("New user registered: " + newUser.getAccountNumber());
+        usersChecking.put(newUser.getCheckingAccountNumber(), newUser);
+        userSaving.put(newUser.getSavingAccountNumber(), newUser);
+
+        System.out.println("New user registered: " + newUser.getFirstName() + " " + newUser.getLastName());
         return newUser;
     }
 
     public User authenticateUser(String accountNumber, String password) {
-        User user = users.get(accountNumber);
+        if (!usersChecking.containsKey(accountNumber) && !userSaving.containsKey(accountNumber)) {
+            return null;
+        }
+        User user = usersChecking.containsKey(accountNumber) ? usersChecking.get(accountNumber) : userSaving.get(accountNumber);
         if (user != null && user.verifyPassword(password)) {
             System.out.println("Login successful! Welcome " + user.getFirstName());
             return user;
@@ -35,61 +42,83 @@ public class Bank {
         }
     }
 
-    public void deposit(String accountNumber, double amount) {
-        if (amount <= 0) return;
+    public void deposit(Account account, double amount) {
+        Scanner scanner = new Scanner(System.in);
 
-        User user = users.get(accountNumber);
-        if (user == null) {
-            System.out.println("Account not found.");
-            return;
-        }
+        while (true)
+        {
+            System.out.println("Enter the deposit amount: ");
+            if (amount <= 0) {
+                System.out.println("Invalid amount. Do you wish to continue?");
+                String choice = Utility.getValidString("Press 1 to 1, or other key to exist");
+                if (choice.equals("1")) continue;
+                else return;
 
-        String accountType = user.getAccount().getAccountType();
-        user.getAccount().deposit(amount);
-        generateTransaction(user, accountNumber, accountType, amount);
-
-        System.out.println("Deposited +" + amount + " to " + accountNumber + " (" + accountType + ")");
-    }
-
-    public void withdraw(String accountNumber, double amount) {
-        if(amount <= 0) return;
-        User user = users.get(accountNumber);
-        String accountType = user.getAccount().getAccountType();
-        if (user != null) {
-            if (user.getAccount().getBalance() < amount) {
-                System.out.println("Insufficient funds!");
-            } else {
-                user.getAccount().withdraw(amount);
-                generateTransaction(user, accountNumber, accountType,amount);
             }
-        } else {
-            System.out.println("Account not found.");
+
+
+                User user = usersChecking.get(account.getAccountNumber());
+                account.deposit(amount);
+                generateTransaction(user, account, amount);
+                System.out.println("Deposited +" + amount + " to " + account.getAccountNumber() + " (" + account.getAccountType() + ")");
+
+
+
         }
     }
 
-    public void checkBalance(String accountNumber) {
-        User user = users.get(accountNumber);
-        if (user != null) {
-            System.out.println("Balance: " + user.getAccount().getBalance());
+    public void withdraw(Account account) {
+        Scanner scanner = new Scanner(System.in);
+
+        while (true)
+        {
+            System.out.println("Enter the withdrawal amount: ");
+            double amount = scanner.nextDouble();
+            if (amount >= account.getBalance()) {
+                System.out.println("Invalid amount. Do you wish to continue?");
+                String choice = Utility.getValidString("Press Y to continue, or other key to exist");
+                if (choice.equals("Y")) continue;
+                else {
+                    System.out.println("Exiting withdrawal...");
+                    return;
+                }
+            }
+            User user = usersChecking.get(account.getAccountNumber());
+            account.withdraw(amount);
+            generateTransaction(user, account, amount);
+            System.out.println("Deposited +" + amount + " to " + account.getAccountNumber() + " (" + account.getAccountType() + ")");
         }
+
+
+    }
+
+    public void checkBalance(Account account) {
+        System.out.println("Current balance: " + account.getBalance());
     }
 
     public void listAccounts() {
-        if (users.isEmpty()) {
+        if (usersChecking.isEmpty() &&  userSaving.isEmpty()) {
             System.out.println("No users registered yet.");
         } else {
             System.out.println("\n==== Bank Users & Accounts ====");
-            for (User user : users.values()) {
+            for (User user : usersChecking.values()) {
+                SavingsAccount savingAccount = user.getSavingAccount();
+                CheckingAccount checkingAccount = user.getCheckingAccount();
+                String savingAccountNumber = savingAccount.getAccountNumber();
+                String checkingAccountNumber = checkingAccount.getAccountNumber();
+                double savingAccountBalance = savingAccount.getBalance();
+                double checkingAccountBalance = checkingAccount.getBalance();
                 System.out.println(user.getFirstName() + " " + user.getLastName() +
-                        " - Account Number: " + user.getAccountNumber() +
-                        " - Balance: $" + user.getAccount().getBalance());
+                        " - Checking Account Number: " + checkingAccountNumber + ", balance: " + savingAccountBalance + "\n" +
+                        " - Saving Account Number: " + savingAccountNumber + ", balance: " + checkingAccountBalance + "\n");
             }
         }
     }
 
-    private void generateTransaction(User user, String accountNumber, String accountType, double amount) {
-        Transaction ts = new Transaction(accountNumber, accountType, amount);
-        user.getAccount().addTransaction(ts);  // Store transactions in the Account class
+    private void generateTransaction(User user, Account account, double amount) {
+        Transaction ts = new Transaction(account.getAccountNumber(), account.getAccountType(), amount);
+        account.addTransaction(ts);  // Store transactions in the Account class
     }
+
 
 }
