@@ -42,18 +42,19 @@ public class Utility {
     }
 
     public static void printMenu(User user, Bank bank) {
-        while (true) {
+        while (true) { // Main loop for choosing an account
             String accountType = selectAccountType();
             if (accountType == null) return; // User chose to exit
 
             var account = accountType.equals("Checking") ? user.getCheckingAccount() : user.getSavingAccount();
 
-            while (true) {
-                System.out.println("\n=====" + user.getFirstName() + " " + user.getLastName() + " Welcome to bank system! =====");
+            while (true) { // Inner loop for banking operations
+                System.out.println("\n=====" + user.getFirstName() + " " + user.getLastName() + " Welcome to the bank system! =====");
                 System.out.println("1. Deposit Money");
                 System.out.println("2. Withdraw Money");
                 System.out.println("3. Check Balance");
-                System.out.println("4. Exit");
+                System.out.println("4. Back to Account Selection");
+                System.out.println("5. Exit Bank System");
 
                 int choice = getValidInt("Enter your choice: ");
 
@@ -64,13 +65,19 @@ public class Utility {
                     }
                     case 2 -> bank.withdraw(account);
                     case 3 -> bank.checkBalance(account);
-                    case 4 -> { return; }
+                    case 4 -> {
+                        System.out.println("Returning to account selection...");
+                        break; // Breaks only the inner loop, returning to account selection
+                    }
+                    case 5 -> {
+                        System.out.println("Thank you for using our banking system. Goodbye!");
+                        return; // Completely exit the banking system
+                    }
                     default -> System.out.println("Invalid choice, please try again.");
                 }
             }
         }
     }
-
     private static String selectAccountType() {
         while (true) {
             System.out.println("Please choose your account type: ");
@@ -80,15 +87,17 @@ public class Utility {
 
             int choice = getValidInt("Enter your choice: ");
 
-            return switch (choice) {
-                case 1 -> "Checking";
-                case 2 -> "Saving";
-                case 3 -> null;
-                default -> {
+            switch (choice) {
+                case 1:
+                    return "Checking";
+                case 2:
+                    return "Saving";
+                case 3:
+                    System.out.println("Exiting banking system...");
+                    return null;
+                default:
                     System.out.println("Invalid choice, please try again.");
-                    yield null;
-                }
-            };
+            }
         }
     }
 
