@@ -61,7 +61,7 @@ public class Utility {
                 switch (choice) {
                     case 1 -> {
                         int amount = getValidInt("Please enter the amount you would like to deposit: ");
-                        bank.deposit(account, amount);
+                        bank.deposit(account);
                     }
                     case 2 -> bank.withdraw(account);
                     case 3 -> bank.checkBalance(account);
@@ -101,7 +101,7 @@ public class Utility {
         }
     }
 
-    private static int getValidInt(String prompt) {
+    public static int getValidInt(String prompt) {
         while (true) {
             System.out.print(prompt);
             if (scanner.hasNextInt()) {
