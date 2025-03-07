@@ -31,6 +31,7 @@ public class Main {
                    if (loggedInUser != null)
                 {
                     Utility.printMenu(loggedInUser, bank);
+
                 } else continue;
                 default: System.out.println("Invalid choice");
 
@@ -38,8 +39,6 @@ public class Main {
 
         }
 
-
     }
-
 
 }

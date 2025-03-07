@@ -7,10 +7,12 @@ import java.util.Scanner;
 public class Bank {
     private final Map<String,User> usersChecking;
     private final Map<String,User> userSaving;
+    private final Map<String, User> userID;
 
     public Bank() {
         usersChecking = new HashMap<>();
         userSaving = new HashMap<>();
+        userID = new HashMap<>();
     }
 
     //    for singleton design.
@@ -23,6 +25,7 @@ public class Bank {
         User newUser = new User();
         usersChecking.put(newUser.getCheckingAccountNumber(), newUser);
         userSaving.put(newUser.getSavingAccountNumber(), newUser);
+        userID.put(newUser.getUserID(), newUser);
 
         System.out.println("New user registered: " + newUser.getFirstName() + " " + newUser.getLastName());
         return newUser;

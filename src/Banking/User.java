@@ -1,5 +1,6 @@
 package Banking;
 
+import static Banking.Utility.AccountNumberGenerator;
 import static Banking.Utility.getValidString;
 
 public class User {
@@ -10,6 +11,7 @@ public class User {
     private String passwordHash;
     private final SavingsAccount savingAccount;
     private final CheckingAccount checkingAccount;
+    private final String userID;
 
     public User() {
         this.firstName = getValidString("Enter your first name: ");
@@ -33,6 +35,7 @@ public class User {
         this.checkingAccount = new CheckingAccount();
         this.savingAccountNumber = this.savingAccount.getAccountNumber();
         this.checkingAccountNumber = this.checkingAccount.getAccountNumber();
+        this.userID = "ACC" + AccountNumberGenerator(10);
 
     }
 
@@ -99,5 +102,9 @@ public class User {
 
     public CheckingAccount getCheckingAccount() {
         return checkingAccount;
+    }
+
+    public String getUserID() {
+        return userID;
     }
 }

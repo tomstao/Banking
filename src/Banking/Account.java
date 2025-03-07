@@ -58,7 +58,7 @@ public abstract class Account {
         if (transactions.isEmpty()) {
             System.out.println("No transactions found.");
         } else {
-            System.out.println("\nTransaction History for Account " + accountNumber);
+            System.out.println("\nTransaction History for "+ getAccountType() +" Account " + accountNumber);
             for (Transaction transaction : transactions.values()) {
                 transaction.printTransaction();
             }
