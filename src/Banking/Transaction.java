@@ -20,7 +20,7 @@ public class Transaction {
     }
 
     private String generateTransactionId() {
-        return UUID.randomUUID().toString();  // Unique transaction ID
+        return UUID.randomUUID().toString();
     }
 
     private String generateTimestamp() {
